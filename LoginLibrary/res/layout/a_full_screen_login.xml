@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/login_background_color"
     android:orientation="vertical" >
 
     <ViewFlipper
         android:id="@+id/loginLoadingViewFlipper"
         android:layout_width="match_parent"
-        android:layout_height="0dp" 
+        android:layout_height="0dp"
         android:layout_weight="1" >
 
         <LinearLayout
@@ -16,51 +17,34 @@
             android:orientation="vertical" >
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#eee"
-                android:gravity="center_horizontal"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
                 android:text="@string/loginHeader"
                 android:textColor="#111"
                 android:textSize="24sp" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Username:"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                style="@style/login_header"/>
 
             <EditText
                 android:id="@+id/tbUsername"
+                style="@style/login_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Username"
-                android:inputType="textEmailAddress" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="Password:"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:hint="username" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
                 android:orientation="horizontal" >
 
                 <EditText
                     android:id="@+id/tbPassword"
+                    style="@style/login_edit_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Password"
+                    android:hint="password"
                     android:inputType="textPassword" />
 
                 <ImageButton
@@ -73,10 +57,12 @@
                     android:src="@android:drawable/ic_menu_help" />
             </LinearLayout>
 
-            <ImageView
+            <ProgressBar
                 android:id="@+id/waitingImage"
-                android:layout_width="fill_parent"
-                android:layout_height="100dp"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:layout_gravity="center_horizontal"
                 android:visibility="gone" />
         </LinearLayout>
 
@@ -89,9 +75,9 @@
 
     <Button
         android:id="@+id/loginButton"
+        style="@style/login_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:text="@string/loginButtonText" />
 
 </LinearLayout>
