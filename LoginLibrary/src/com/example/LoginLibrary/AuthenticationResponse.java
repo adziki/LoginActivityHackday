@@ -6,7 +6,12 @@ import java.io.Serializable;
  * Created by adziki on 1/10/14.
  */
 public class AuthenticationResponse implements Serializable {
-    public String AuthToken = "";
+    /**
+	 * Unique auto-generated ID for serialized data 
+	 */
+	private static final long serialVersionUID = 7408595430180601569L;
+	
+	public String AuthToken = "";
     public boolean Success = false;
 
     public AuthenticationResponse(){

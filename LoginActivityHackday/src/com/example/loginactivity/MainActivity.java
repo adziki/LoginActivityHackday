@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.LoginLibrary.AuthenticationResponse;
 import com.example.LoginLibrary.LoginActivity;
-import com.example.LoginLibrary.WebLogin;
+import com.example.net.GithubLoginHandler;
 
 public class MainActivity extends Activity {
 
@@ -34,59 +34,31 @@ public class MainActivity extends Activity {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            	// TODO: Implement this login via the login activity
-//            	GithubBasicUserAuthRequest request = new GithubBasicUserAuthRequest("username", "password");
-//        		Managers.getMainWebServiceManager().doRequestInBackground(request, new EventListener<ResultInfo<JSONObject>>() {
-//
-//        			@Override
-//        			public void onEvent(Object sender, ResultInfo<JSONObject> result) {
-//        				if (result != null && result.isStatusOK()) {
-//        					JSONObject json = result.getResult();
-//        					if (json != null) {
-//        						try {
-//        							final String token = json.getString("token");
-//        							ThreadingUtils.runOnUIThread(new Runnable() {
-//        								@Override
-//        								public void run() {
-//        									Toast.makeText(getApplicationContext(), token, Toast.LENGTH_LONG).show();
-//        								}
-//        							});
-//        						} catch (JSONException e) {
-//        							e.printStackTrace();
-//        						}
-//        					}
-//        				}
-//        			}
-//
-//        		});
-            	
-            	
-                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                i.putExtra(LoginActivity.LOGIN_CLASS, new WebLogin("http://login.google.com"));
-                startActivityForResult(i, LOGIN_CODE);
+            	Intent loginActivityIntent = LoginActivity.createIntentForWebLogin(getApplicationContext(), new GithubLoginHandler()); 
+                startActivityForResult(loginActivityIntent, LOGIN_CODE);
             }
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == LOGIN_CODE){
+        if(requestCode == LOGIN_CODE) {
             if(resultCode != RESULT_OK)
             {
-                Toast.makeText(getApplicationContext(), "Cancel", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Authentication Canceled", Toast.LENGTH_SHORT).show();
                 return;
             }
+            
             AuthenticationResponse response = (AuthenticationResponse)data.getSerializableExtra(LoginActivity.AUTH_RESPONSE);
-
             if(response.Success){
                 mAuthSuccess.setText("Authentication Succeeded");
-                mAuthToken.setText("Token: "+response.AuthToken);
+                mAuthToken.setText("Token: " + response.AuthToken);
             }
             else{
                 mAuthSuccess.setText("Authentication Failed");
                 mAuthToken.setText("");
             }
-        }else{
+        } else{
             super.onActivityResult(requestCode, resultCode, data);
         }
     }

@@ -3,6 +3,9 @@
     <string name="app_name">Login Library</string>
     <string name="loginButtonText">LOG IN</string>
     <string name="loginHeader">Log In</string>
+    
+    <string name="LoginActivity.UserNameValidation">Please Enter a Username</string>
+    <string name="LoginActivity.PasswordValidation">Please Enter a Password</string>
     <color name="login_background_color">#eee</color>
     <color name="login_label_color">#555</color>
 </resources>

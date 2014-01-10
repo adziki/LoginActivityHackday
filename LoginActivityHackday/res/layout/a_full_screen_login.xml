@@ -1,73 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/login_background_color">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/login_background_color"
+    android:orientation="vertical" >
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
+    <ViewFlipper
+        android:id="@+id/loginLoadingViewFlipper"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <TextView
-            android:text="@string/loginHeader"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/login_header"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:src="@drawable/corgi"/>
-
-        <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:ems="10"
-                    android:id="@+id/tbUsername"
-                    android:hint="username"
-                    style="@style/login_edit_text"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"/>
+        android:layout_weight="1" >
 
         <LinearLayout
-                    android:layout_width="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/login_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/loginHeader" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:src="@drawable/corgi" />
+
+            <EditText
+                android:id="@+id/tbUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:ems="10"
+                android:hint="username"
+                android:inputType="textEmailAddress"
+                style="@style/login_edit_text" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/tbPassword"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <EditText
-                        android:layout_width="0dp" android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPassword"
-                        android:ems="10"
-                        android:id="@+id/tbPassword"
-                        android:hint="password"
-                        style="@style/login_edit_text"
-                        android:layout_marginLeft="20dp"/>
-                    <ImageButton
-                        android:layout_width="40dp" android:id="@+id/forgotPasswordButton"
-                        android:layout_height="40dp" android:layout_marginRight="8dp" android:layout_marginLeft="15dp"
-                        android:src="@android:drawable/ic_menu_help"
-                        android:background="@android:color/transparent"/>
-                    </LinearLayout>
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="password"
+                    android:inputType="textPassword"
+                    style="@style/login_edit_text" />
+
+                <ImageButton
+                    android:id="@+id/forgotPasswordButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@android:color/transparent"
+                    android:src="@android:drawable/ic_menu_help" />
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/waitingImage"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone" />
+        </LinearLayout>
 
         <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
-            android:id="@+id/waitingImage"
-            android:layout_gravity="center_horizontal"
-            android:visibility="gone"/>
-    </LinearLayout>
+            android:id="@+id/loginLoadingSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indeterminateOnly="true" />
+    </ViewFlipper>
 
     <Button
+        android:id="@+id/loginButton"
+        style="@style/login_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/loginButtonText"
-        android:id="@+id/loginButton"
-        style="@style/login_button"/>
+        android:text="@string/loginButtonText" />
 
 </LinearLayout>
