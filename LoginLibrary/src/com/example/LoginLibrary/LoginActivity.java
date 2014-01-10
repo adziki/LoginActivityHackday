@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.*;
 import com.example.LoginLibrary.interfaces.LoginInterface;
 
@@ -17,15 +18,12 @@ public class LoginActivity extends Activity {
     public static final String AUTH_RESPONSE = "com.example.AUTH_RESPONSE";
 
     private final int mFullScreenResource = R.layout.a_full_screen_login;
-    private final int mDialogScreenResource = R.layout.a_dialog_screen_login;
 
     private EditText mUserName;
     private EditText mPassword;
     private Button mLoginButton;
     private ImageButton mForgotPasswordButton;
-    private ImageView mWaitingImage;
-    private TextView mUsernameLabel;
-    private TextView mPasswordLabel;
+    private ProgressBar mWaitingImage;
 
 
     private LoginInterface mLoginClass;
@@ -34,6 +32,7 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(mFullScreenResource);
 
         Bundle b = getIntent().getExtras();
@@ -48,10 +47,8 @@ public class LoginActivity extends Activity {
 
         mUserName=(EditText)findViewById(R.id.tbUsername);
         mPassword=(EditText)findViewById(R.id.tbPassword);
-        mUsernameLabel=(TextView)findViewById(R.id.textView);
-        mPasswordLabel=(TextView)findViewById(R.id.textView2);
         mLoginButton=(Button)findViewById(R.id.loginButton);
-        mWaitingImage = (ImageView)findViewById(R.id.waitingImage);
+        mWaitingImage = (ProgressBar)findViewById(R.id.waitingImage);
         mForgotPasswordButton=(ImageButton)findViewById(R.id.forgotPasswordButton);
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +65,9 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
                 //call forgot password activity
+                 Intent i = new Intent(getApplicationContext(), ForgotPasswordActivity.class);
 
+                startActivity(i);
             }
         });
     }
@@ -83,19 +82,16 @@ public class LoginActivity extends Activity {
 
     protected void hideLogin(){
        mLoginButton.setEnabled(false);
-       mUsernameLabel.setVisibility(View.GONE);
        mUserName.setVisibility(View.GONE);
-       mPasswordLabel.setVisibility(View.GONE);
        mPassword.setVisibility(View.GONE);
 
         mWaitingImage.setVisibility(View.VISIBLE);
+
     }
 
     protected void showLogin(){
         mLoginButton.setEnabled(true);
-        mUsernameLabel.setVisibility(View.VISIBLE);
         mUserName.setVisibility(View.VISIBLE);
-        mPasswordLabel.setVisibility(View.VISIBLE);
         mPassword.setVisibility(View.VISIBLE);
 
         mWaitingImage.setVisibility(View.GONE);

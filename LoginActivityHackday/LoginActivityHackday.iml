@@ -25,6 +25,8 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="LoginLibrary" />
+    <orderEntry type="module" module-name="WebServiceManager" />
+    <orderEntry type="module" module-name="BaseUtils" />
   </component>
 </module>
 
