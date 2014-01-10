@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.*;
 import com.example.LoginLibrary.interfaces.LoginInterface;
 
@@ -33,6 +34,7 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(mFullScreenResource);
 
         Bundle b = getIntent().getExtras();
@@ -67,7 +69,9 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
                 //call forgot password activity
+                 Intent i = new Intent(getApplicationContext(), ForgotPasswordActivity.class);
 
+                startActivity(i);
             }
         });
     }
@@ -88,6 +92,7 @@ public class LoginActivity extends Activity {
        mPassword.setVisibility(View.GONE);
 
         mWaitingImage.setVisibility(View.VISIBLE);
+
     }
 
     protected void showLogin(){
