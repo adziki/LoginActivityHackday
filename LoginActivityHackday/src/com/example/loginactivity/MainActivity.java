@@ -34,6 +34,33 @@ public class MainActivity extends Activity {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+            	// TODO: Implement this login via the login activity
+//            	GithubBasicUserAuthRequest request = new GithubBasicUserAuthRequest("username", "password");
+//        		Managers.getMainWebServiceManager().doRequestInBackground(request, new EventListener<ResultInfo<JSONObject>>() {
+//
+//        			@Override
+//        			public void onEvent(Object sender, ResultInfo<JSONObject> result) {
+//        				if (result != null && result.isStatusOK()) {
+//        					JSONObject json = result.getResult();
+//        					if (json != null) {
+//        						try {
+//        							final String token = json.getString("token");
+//        							ThreadingUtils.runOnUIThread(new Runnable() {
+//        								@Override
+//        								public void run() {
+//        									Toast.makeText(getApplicationContext(), token, Toast.LENGTH_LONG).show();
+//        								}
+//        							});
+//        						} catch (JSONException e) {
+//        							e.printStackTrace();
+//        						}
+//        					}
+//        				}
+//        			}
+//
+//        		});
+            	
+            	
                 Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                 i.putExtra(LoginActivity.LOGIN_CLASS, new WebLogin("http://login.google.com"));
                 startActivityForResult(i, LOGIN_CODE);
