@@ -35,7 +35,8 @@
                 android:layout_marginRight="20dp"
                 android:ems="10"
                 android:hint="username"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                style="@style/login_edit_text" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -50,7 +51,8 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="password"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    style="@style/login_edit_text" />
 
                 <ImageButton
                     android:id="@+id/forgotPasswordButton"
