@@ -14,6 +14,7 @@ import com.example.LoginLibrary.interfaces.LoginInterface;
 public class LoginActivity extends Activity {
     public static final String LOGIN_CLASS = "com.example.loginclass";
     public static final String DIALOG_SPECIFIER = "com.example.isdialog";
+    public static final String AUTH_RESPONSE = "com.example.AUTH_RESPONSE";
 
     private final int mFullScreenResource = R.layout.a_full_screen_login;
     private final int mDialogScreenResource = R.layout.a_dialog_screen_login;
@@ -74,10 +75,9 @@ public class LoginActivity extends Activity {
 
     protected void loginSuccess(AuthenticationResponse response){
         Intent result = new Intent();
-        result.putExtra("TEMP_AUTH","GOOD!");
-        result.putExtra("AUTH_RESPONSE",response);
-        setIntent(result);
-        setResult(RESULT_OK);
+        result.putExtra(AUTH_RESPONSE,response);
+
+        setResult(RESULT_OK,result);
         finish();
     }
 

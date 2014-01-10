@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.example.LoginLibrary.AuthenticationResponse;
 import com.example.LoginLibrary.LoginActivity;
 import com.example.LoginLibrary.WebLogin;
@@ -43,14 +44,19 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == LOGIN_CODE){
-            AuthenticationResponse response = (AuthenticationResponse)getIntent().getSerializableExtra("AUTH_RESPONSE");
+            if(resultCode != RESULT_OK)
+            {
+                Toast.makeText(getApplicationContext(), "Cancel", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            AuthenticationResponse response = (AuthenticationResponse)data.getSerializableExtra(LoginActivity.AUTH_RESPONSE);
 
             if(response.Success){
-                mAuthToken.setText("Authentication Succeeded");
+                mAuthSuccess.setText("Authentication Succeeded");
                 mAuthToken.setText("Token: "+response.AuthToken);
             }
             else{
-                mAuthToken.setText("Authentication Failed");
+                mAuthSuccess.setText("Authentication Failed");
                 mAuthToken.setText("");
             }
         }else{
