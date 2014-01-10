@@ -17,13 +17,12 @@ public class LoginActivity extends Activity {
     public static final String AUTH_RESPONSE = "com.example.AUTH_RESPONSE";
 
     private final int mFullScreenResource = R.layout.a_full_screen_login;
-    private final int mDialogScreenResource = R.layout.a_dialog_screen_login;
 
     private EditText mUserName;
     private EditText mPassword;
     private Button mLoginButton;
     private ImageButton mForgotPasswordButton;
-    private ImageView mWaitingImage;
+    private ProgressBar mWaitingImage;
     private TextView mUsernameLabel;
     private TextView mPasswordLabel;
 
@@ -51,7 +50,7 @@ public class LoginActivity extends Activity {
         mUsernameLabel=(TextView)findViewById(R.id.textView);
         mPasswordLabel=(TextView)findViewById(R.id.textView2);
         mLoginButton=(Button)findViewById(R.id.loginButton);
-        mWaitingImage = (ImageView)findViewById(R.id.waitingImage);
+        mWaitingImage = (ProgressBar)findViewById(R.id.waitingImage);
         mForgotPasswordButton=(ImageButton)findViewById(R.id.forgotPasswordButton);
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
