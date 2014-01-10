@@ -24,8 +24,6 @@ public class LoginActivity extends Activity {
     private Button mLoginButton;
     private ImageButton mForgotPasswordButton;
     private ProgressBar mWaitingImage;
-    private TextView mUsernameLabel;
-    private TextView mPasswordLabel;
 
 
     private LoginInterface mLoginClass;
@@ -49,8 +47,6 @@ public class LoginActivity extends Activity {
 
         mUserName=(EditText)findViewById(R.id.tbUsername);
         mPassword=(EditText)findViewById(R.id.tbPassword);
-        mUsernameLabel=(TextView)findViewById(R.id.textView);
-        mPasswordLabel=(TextView)findViewById(R.id.textView2);
         mLoginButton=(Button)findViewById(R.id.loginButton);
         mWaitingImage = (ProgressBar)findViewById(R.id.waitingImage);
         mForgotPasswordButton=(ImageButton)findViewById(R.id.forgotPasswordButton);
@@ -86,9 +82,7 @@ public class LoginActivity extends Activity {
 
     protected void hideLogin(){
        mLoginButton.setEnabled(false);
-       mUsernameLabel.setVisibility(View.GONE);
        mUserName.setVisibility(View.GONE);
-       mPasswordLabel.setVisibility(View.GONE);
        mPassword.setVisibility(View.GONE);
 
         mWaitingImage.setVisibility(View.VISIBLE);
@@ -97,9 +91,7 @@ public class LoginActivity extends Activity {
 
     protected void showLogin(){
         mLoginButton.setEnabled(true);
-        mUsernameLabel.setVisibility(View.VISIBLE);
         mUserName.setVisibility(View.VISIBLE);
-        mPasswordLabel.setVisibility(View.VISIBLE);
         mPassword.setVisibility(View.VISIBLE);
 
         mWaitingImage.setVisibility(View.GONE);

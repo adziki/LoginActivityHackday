@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Login Library</string>
-    <string name="loginButtonText">Log In</string>
+    <string name="loginButtonText">LOG IN</string>
     <string name="loginHeader">Log In</string>
     <color name="login_background_color">#eee</color>
     <color name="login_label_color">#555</color>
