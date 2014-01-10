@@ -1,11 +1,18 @@
 package com.example.LoginLibrary;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
+import android.view.WindowManager.LayoutParams;
+import android.view.inputmethod.EditorInfo;
 import android.widget.*;
+import android.widget.TextView.OnEditorActionListener;
+
 import com.example.LoginLibrary.interfaces.LoginInterface;
 
 /**
@@ -26,10 +33,21 @@ public class LoginActivity extends Activity {
     private ImageView mWaitingImage;
     private TextView mUsernameLabel;
     private TextView mPasswordLabel;
-
+    private ProgressBar mLoadingSpinner;
+    private ViewFlipper mViewFlipper;
 
     private LoginInterface mLoginClass;
     private boolean mIsDialog = false;
+    
+    public static final Intent createIntentForWebLogin(Context context, LoginInterface webLoginHandler) {
+    	Intent loginIntent = new Intent(context, LoginActivity.class);
+    	loginIntent.putExtra(LoginActivity.LOGIN_CLASS, webLoginHandler);
+        return loginIntent;
+    }
+    
+    // -------------------------------------
+    // Activity Lifecycle
+    // -------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +64,7 @@ public class LoginActivity extends Activity {
             finish();
         }
 
+        // TODO: Move into a viewHolder
         mUserName=(EditText)findViewById(R.id.tbUsername);
         mPassword=(EditText)findViewById(R.id.tbPassword);
         mUsernameLabel=(TextView)findViewById(R.id.textView);
@@ -53,34 +72,117 @@ public class LoginActivity extends Activity {
         mLoginButton=(Button)findViewById(R.id.loginButton);
         mWaitingImage = (ImageView)findViewById(R.id.waitingImage);
         mForgotPasswordButton=(ImageButton)findViewById(R.id.forgotPasswordButton);
+        mLoadingSpinner=(ProgressBar)findViewById(R.id.loginLoadingSpinner);
+        mViewFlipper=(ViewFlipper)findViewById(R.id.loginLoadingViewFlipper);
+        
+        mUserName.setOnFocusChangeListener(new OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus) {
+					userNameValid();
+				}
+			}
+		});
+		
+        mPassword.setOnFocusChangeListener(new OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus) {
+					passwordValid();
+				}
+			}
+		});
+        
+        // Show the keyboard when the view is created
+ 		mUserName.requestFocus();
+ 		this.getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+ 		
+ 		// Perform the done action on the done button for the password field
+ 		mPassword.setOnEditorActionListener(new OnEditorActionListener() {
+ 			@Override
+ 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+ 		        if ( actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO  ||
+ 		           ( event.getAction() 	== KeyEvent.ACTION_DOWN &&
+ 		             event.getKeyCode() == KeyEvent.KEYCODE_ENTER )) {
+ 		        	validateAndPerformLogin();
+ 		            return true;
+ 		        }
+ 		        return false;
+ 			}
+ 		});
 
+ 		// Login Button Click Listener
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mLoginClass != null)
-                {
-                      new AsyncLogin(mLoginClass).execute();
-                }
+                validateAndPerformLogin();
             }
         });
 
+        // Forgot Button Click Listener
         mForgotPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //call forgot password activity
-
+                //TODO: call forgot password activity
             }
         });
     }
 
     protected void loginSuccess(AuthenticationResponse response){
+    	//mViewFlipper.showNext();
         Intent result = new Intent();
         result.putExtra(AUTH_RESPONSE,response);
 
         setResult(RESULT_OK,result);
         finish();
     }
-
+    
+    // -------------------------------------
+    // Login Action and Validation
+    // -------------------------------------
+    
+    protected void validateAndPerformLogin() {
+    	if(mLoginClass != null && validateInput())
+        {
+    		//mViewFlipper.showNext();
+    		new AsyncUsernamePassLogin(mLoginClass, mUserName.getText().toString(), mPassword.getText().toString()).execute();
+        }
+    }
+    
+    protected boolean validateInput() {
+    	return (userNameValid() && passwordValid());
+    }
+    
+    protected boolean userNameValid() {
+    	boolean valid = (mUserName.getText().toString() != null && mUserName.getText().toString().length() > 0);
+		setTextErrorOrClearFromResource(!valid, mUserName, R.string.LoginActivity_UserNameValidation);
+    	return valid;
+    }
+    
+    protected boolean passwordValid() {
+    	boolean valid = (mPassword.getText().toString() != null && mPassword.getText().toString().length() > 0);
+    	setTextErrorOrClearFromResource(!valid, mPassword, R.string.LoginActivity_PasswordValidation);
+    	return valid;
+    }
+    
+    public static void setTextErrorOrClearFromResource(boolean isError, TextView editText, int stringResourceId) {
+		if (editText == null) {
+			return;
+		}
+		
+		Context context = editText.getContext().getApplicationContext();
+		if (isError) {
+			editText.setError(context.getString(stringResourceId));	
+		} else {
+			editText.setError(null);	
+		}
+	}
+    
+    // -------------------------------------
+    // UI Updates
+    // -------------------------------------
+    
+    // TODO: Show Progress Spinner ViewFlipper
     protected void hideLogin(){
        mLoginButton.setEnabled(false);
        mUsernameLabel.setVisibility(View.GONE);
@@ -88,7 +190,7 @@ public class LoginActivity extends Activity {
        mPasswordLabel.setVisibility(View.GONE);
        mPassword.setVisibility(View.GONE);
 
-        mWaitingImage.setVisibility(View.VISIBLE);
+       mWaitingImage.setVisibility(View.VISIBLE);
     }
 
     protected void showLogin(){
@@ -99,22 +201,28 @@ public class LoginActivity extends Activity {
         mPassword.setVisibility(View.VISIBLE);
 
         mWaitingImage.setVisibility(View.GONE);
-
     }
+    
+    // -------------------------------------
+    // Async Login Task
+    // -------------------------------------
 
-    private class AsyncLogin extends AsyncTask<Void,Void,Void>{
+    private class AsyncUsernamePassLogin extends AsyncTask<Void,Void,Void>{
 
-        private LoginInterface mLogin;
+        private LoginInterface loginHandler;
+        private String username;
+        private String password;
         private AuthenticationResponse mResponse;
 
-        public AsyncLogin(LoginInterface login){
-               mLogin = login;
+        public AsyncUsernamePassLogin(LoginInterface loginHandler, String username, String password) {
+            this.loginHandler = loginHandler;
+            this.username = username;
+            this.password = password;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-           mResponse = mLogin.login();
-
+        	mResponse = loginHandler.login(this.username, this.password);
             return null;
         }
 
@@ -127,10 +235,10 @@ public class LoginActivity extends Activity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Toast.makeText(getApplicationContext(),"Login completed", Toast.LENGTH_SHORT).show();
             showLogin();
 
-            //if success
+            // TODO: Check for success? -SB
+            // If Success
             loginSuccess(mResponse);
         }
 
