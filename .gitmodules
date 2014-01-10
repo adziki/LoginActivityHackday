@@ -1,3 +1,3 @@
 [submodule "External Libraries/RZAndroidWebServiceManager"]
 	path = External Libraries/RZAndroidWebServiceManager
-	url = https://git@github.com/Raizlabs/RZAndroidWebServiceManager.git
+url=https://github.com/Raizlabs/RZAndroidWebServiceManager.git
